@@ -1,0 +1,38 @@
+# gdb/domain/account_rules_engine.py
+
+class AccountRulesEngine:
+    """Dynamic Dictionary-based Rules Engine."""
+    # TODO (Step 1): Move every policy value out of your 13.1 if/else chains into this dictionary,
+    #   keyed by upper-case account type ("SAVINGS", "CURRENT", "SALARY", "FIXEDDEPOSIT"), e.g.
+    #   "SAVINGS": {"min_balance": ..., "interest_rate": ..., "overdraft_limit": ...}
+    _RULES: dict = {
+        "SAVINGS": {"min_balance": 1000.0, "interest_rate": 4.0, "overdraft_limit": 0.0},
+        "CURRENT": {"min_balance": 0.0, "interest_rate": 0.0, "overdraft_limit": 10000.0},
+        "SALARY": {"min_balance": 0.0, "interest_rate": 0.0, "overdraft_limit": 0.0},
+        "FIXEDDEPOSIT": {"min_balance": 0.0, "interest_rate": 6.5, "overdraft_limit": 0.0},
+    }
+
+    @classmethod
+    def get_minimum_balance(cls, account_type: str) -> float:
+        # TODO (Step 2): Look "min_balance" up in cls._RULES (O(1), no if/else chain).
+        #   Return 0.0 for None/empty or unknown types (hint: dict.get() with a default).
+        normalized_type = account_type.strip().upper() if account_type else ""
+        return cls._RULES.get(normalized_type, {}).get("min_balance", 0.0)
+
+    @classmethod
+    def get_interest_rate(cls, account_type: str) -> float:
+        # TODO (Step 2): Look "interest_rate" up in cls._RULES; 0.0 for None/empty or unknown types.
+        normalized_type = account_type.strip().upper() if account_type else ""
+        return cls._RULES.get(normalized_type, {}).get("interest_rate", 0.0)
+
+    @classmethod
+    def get_overdraft_limit(cls, account_type: str) -> float:
+        # TODO (Step 2): Look "overdraft_limit" up in cls._RULES; 0.0 for None/empty or unknown types.
+        normalized_type = account_type.strip().upper() if account_type else ""
+        return cls._RULES.get(normalized_type, {}).get("overdraft_limit", 0.0)
+
+    @classmethod
+    def validate_withdrawal(cls, account_type: str, current_balance: float, amount: float) -> bool:
+        min_bal = cls.get_minimum_balance(account_type)
+        overdraft = cls.get_overdraft_limit(account_type)
+        return (current_balance - amount) >= (min_bal - overdraft)
