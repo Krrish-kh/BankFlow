@@ -1,5 +1,7 @@
 # Activity Roadmap
 
+**Wiki version:** [BankFlow Activity Roadmap](https://github.com/Krrish-kh/BankFlow/wiki/Activity-Roadmap)
+
 I built BankFlow in a sequence of focused capability releases. Every branch adds one clear improvement to the cumulative `main` line, so the history shows how the platform grows from a basic account model into an auditable banking core.
 
 | Activity | Branch | What I added |

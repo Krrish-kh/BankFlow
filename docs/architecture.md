@@ -1,5 +1,7 @@
 # Architecture Notes
 
+**Wiki version:** [BankFlow Architecture](https://github.com/Krrish-kh/BankFlow/wiki/Architecture)
+
 ## My Design Goal
 
 I designed BankFlow around one principle: money movement should be easy to follow, difficult to misuse, and straightforward to audit. For that reason, I keep account state, policy decisions, operations, transaction records, and storage concerns separate.

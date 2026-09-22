@@ -2,6 +2,8 @@
 
 This guide is how I set up and verify BankFlow locally.
 
+**Wiki version:** [BankFlow Getting Started](https://github.com/Krrish-kh/BankFlow/wiki/Getting-Started)
+
 ## Requirements
 
 - Python 3.10 or newer
