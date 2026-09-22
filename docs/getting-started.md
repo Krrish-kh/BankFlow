@@ -11,8 +11,8 @@ The project uses the Python standard library for its core implementation and tes
 ## Clone
 
 ```powershell
-git clone https://github.com/Krrish-kh/BANKING_SYSTEM.git
-Set-Location .\BANKING_SYSTEM
+git clone https://github.com/Krrish-kh/BankFlow.git
+Set-Location .\BankFlow
 ```
 
 ## Run an Activity

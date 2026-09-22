@@ -50,8 +50,8 @@ Each activity folder is self-contained. The later activities use the `gdb` packa
 Python 3.10 or newer is recommended. Clone the repository and run a capability-specific test suite from its activity directory:
 
 ```powershell
-git clone https://github.com/Krrish-kh/BANKING_SYSTEM.git
-Set-Location .\BANKING_SYSTEM\activities\activity-18
+git clone https://github.com/Krrish-kh/BankFlow.git
+Set-Location .\BankFlow\activities\activity-18
 python -m gdb.tests.test_bridge_logging -v
 ```
 
