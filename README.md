@@ -1,53 +1,53 @@
 # BankFlow Core Banking Platform
 
-**A modular core banking platform for reliable account operations, policy-driven money movement, and auditable transaction workflows.**
+**A modular core banking platform for account management, policy-driven money movement, and transaction auditability.**
 
-BankFlow models a financial services core with account products, configurable policy, secure transfers, transaction records, command-based operations, and pluggable logging destinations.
+I built BankFlow as a practical banking core that grows from account fundamentals into a layered system for secure transfers, configurable rules, transaction records, command workflows, and interchangeable logging backends.
 
-## Product Capabilities
+## What I Built
 
-- Account lifecycle management with deposits, withdrawals, PIN protection, and status controls
+- Account lifecycle management, deposits, withdrawals, PIN protection, and status controls
 - Savings, current, fixed-deposit, and salary account products
-- Centralized policy evaluation for balances, interest, overdrafts, and transfer limits
-- External `.properties` configuration for operational rules
+- Centralized rules for balances, interest, overdrafts, tenure, and transfer limits
+- External `.properties` configuration for operational thresholds
 - Daily transfer limits based on account type and customer tenure
-- Structured transaction records with formatted receipts and unique identifiers
-- Command objects for deposit, withdrawal, and transfer workflows
-- File, in-memory, and simulated database logging destinations
-- Runtime switching between logging backends through a bridge abstraction
+- Structured transaction records, unique identifiers, and formatted receipts
+- Command objects for deposit, withdrawal, and transfer operations
+- File, memory, and simulated database logging destinations
+- Runtime switching between logging backends through a common destination contract
 
-## Architecture
-
-The implementation is organized as a progressive set of compatible capability layers:
+## How the System Fits Together
 
 ```text
 Account products
-	|
-Policy and rules engine ---- external configuration
-	|
+      |
+Rules engine <---- external configuration
+      |
 Transfer service
-	|
-Transaction model
-	|
-Command workflows ---- logging destinations
+      |
+Transaction records
+      |
+Commands ---- logging destinations
 ```
 
-The `main` branch is the cumulative release line. Activity branches are feature snapshots that can be reviewed independently and merged forward without replacing later capabilities.
+I keep `main` as the cumulative release line. Each activity branch records one focused capability and can be reviewed independently before it is carried forward.
 
 ## Repository Layout
 
 ```text
 activities/
-  activity-01/ ... activity-18/   progressive capability snapshots
-docs/                             architecture and operating notes
+  activity-01/ ... activity-18/   capability snapshots
+.github/agents/                   VS Code learning agent
+ docs/                            architecture and operating notes
+tools/                            local simulation runners
 README.md                         project overview
 ```
 
-Each activity folder is self-contained. The later activities use the `gdb` package structure and include their own configuration and tests.
+The later activities use a self-contained `gdb` package with configuration and tests. The earlier activities retain their original lightweight structure so the progression remains visible.
 
-## Getting Started
+## Quick Start
 
-Python 3.10 or newer is recommended. Clone the repository and run a capability-specific test suite from its activity directory:
+I use Python 3.10 or newer and the standard library for the core implementation.
 
 ```powershell
 git clone https://github.com/Krrish-kh/BankFlow.git
@@ -55,36 +55,45 @@ Set-Location .\BankFlow\activities\activity-18
 python -m gdb.tests.test_bridge_logging -v
 ```
 
-Useful verification commands:
+To run the main operational checks:
 
 ```powershell
 Set-Location .\activities\activity-15
 python -m gdb.tests.test_transfer -v
-
 Set-Location ..\activity-16
 python -m gdb.tests.test_transaction_model -v
-
 Set-Location ..\activity-17
 python -m gdb.tests.test_command_logging -v
-
 Set-Location ..\activity-18
 python -m gdb.tests.test_bridge_logging -v
 ```
 
-## Release Roadmap
+## Try a Simulation
 
-| Phase | Capabilities |
+I included a small simulator that uses the final activity implementation and prints observable balances and audit records:
+
+```powershell
+Set-Location .\BankFlow
+python tools\simulate_bankflow.py transfer
+python tools\simulate_bankflow.py audit
+```
+
+The **BankFlow Simulator** custom agent can run these scenarios on request and explain the source path as an interactive lesson. Its definition is in `.github/agents/bankflow-simulator.agent.md`.
+
+## Development Path
+
+| Stage | What I added |
 | --- | --- |
 | Foundation | Account state, validation, lifecycle, and product behavior |
-| Policy | Interest, overdraft, account policy, rules engine, and external configuration |
-| Operations | Account factory, transfers, tenure tiers, and daily limits |
+| Policy | Interest, overdraft, account policy, rules, and external configuration |
+| Operations | Factories, transfers, tenure tiers, and daily limits |
 | Audit | Transactions, receipts, commands, persistence, and logging destinations |
 
-The complete activity-to-feature map is available in [docs/activity-roadmap.md](docs/activity-roadmap.md). System boundaries and extension points are described in [docs/architecture.md](docs/architecture.md).
+The detailed activity map is in [docs/activity-roadmap.md](docs/activity-roadmap.md). The system boundaries and extension points are in [docs/architecture.md](docs/architecture.md). Setup and contribution notes are in [docs/getting-started.md](docs/getting-started.md).
 
-## Branch Convention
+## Branch Naming
 
-Branches follow `activity-XX-feature-name`, for example:
+I use `activity-XX-feature-name`, for example:
 
 ```text
 activity-15-funds-transfer

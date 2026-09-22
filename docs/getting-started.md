@@ -1,30 +1,32 @@
 # Getting Started
 
+This guide is how I set up and verify BankFlow locally.
+
 ## Requirements
 
 - Python 3.10 or newer
 - Git
 - PowerShell, Command Prompt, or a Unix-compatible shell
 
-The project uses the Python standard library for its core implementation and tests.
+The core implementation uses the Python standard library. No external package installation is required for the activity test suites.
 
-## Clone
+## Clone the Repository
 
 ```powershell
 git clone https://github.com/Krrish-kh/BankFlow.git
 Set-Location .\BankFlow
 ```
 
-## Run an Activity
+## Run the Latest Activity
 
-Each later activity is self-contained. Change into the activity directory before running its module tests:
+The final activity contains the complete command and bridge-logging implementation:
 
 ```powershell
 Set-Location .\activities\activity-18
 python -m gdb.tests.test_bridge_logging -v
 ```
 
-The most complete operational verification sequence is:
+## Run the Main Verification Sequence
 
 ```powershell
 Set-Location ..\activity-15
@@ -37,7 +39,18 @@ Set-Location ..\activity-18
 python -m gdb.tests.test_bridge_logging -v
 ```
 
-## Work With a Feature Branch
+## Run a Simulation
+
+From the repository root:
+
+```powershell
+python tools\simulate_bankflow.py transfer
+python tools\simulate_bankflow.py audit
+```
+
+The simulator uses the activity-18 implementation and prints the balance changes and transaction receipts that I expect from each scenario.
+
+## Inspect an Activity Branch
 
 ```powershell
 git fetch origin
@@ -46,8 +59,8 @@ python -m gdb.tests.test_bridge_logging -v
 git switch main
 ```
 
-Activity branches are cumulative snapshots. New work should use a descriptive branch name and should preserve the existing activity folder layout.
+Activity branches are cumulative snapshots. When I add a new feature, I keep the existing activity folder layout and use a descriptive branch name.
 
 ## Configuration
 
-Activities 14-18 load account rules from `config/rules/*.properties`. Keep configuration changes localized to the activity that owns the behavior and validate them with the corresponding tests.
+Activities 14-18 load business rules from `config/rules/*.properties`. I keep configuration changes with the activity that owns the behavior and verify them through the corresponding tests.

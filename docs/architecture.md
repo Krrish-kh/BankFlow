@@ -1,43 +1,47 @@
-# Architecture
+# Architecture Notes
 
-## Purpose
+## My Design Goal
 
-BankFlow Core Banking Platform is structured as a small banking core with clear boundaries between account state, policy, operations, audit records, and storage.
+I designed BankFlow around one principle: money movement should be easy to follow, difficult to misuse, and straightforward to audit. For that reason, I keep account state, policy decisions, operations, transaction records, and storage concerns separate.
 
-## Core Layers
+## Account Domain
 
-### Account Domain
+The account classes own balances, lifecycle state, PIN verification, and product-specific behavior. Savings, current, fixed-deposit, and salary accounts share the common account contract while retaining their own rules.
 
-Account classes own balances, lifecycle state, PIN verification, product rules, and account-specific behavior. Concrete products share the common account contract while defining their own minimum balance and interest behavior.
+## Policy Layer
 
-### Policy
+I keep business decisions in `AccountRulesEngine`. It provides minimum balances, interest rates, overdraft limits, and tenure-based transfer limits. Activities 14-18 load adjustable thresholds from `config/rules/*.properties`, so changing a policy value does not require rewriting account classes.
 
-`AccountRulesEngine` centralizes business decisions such as minimum balances, interest rates, overdrafts, and tenure-based transfer limits. External properties files keep adjustable thresholds outside the domain classes.
+## Operations Layer
 
-### Operations
+`TransferService` coordinates a complete transfer. It checks both accounts, verifies the sender PIN, protects product minimum balances, applies the daily limit, and only then performs the debit and credit. The sender's daily total is updated after the money movement succeeds.
 
-`TransferService` coordinates a complete funds transfer. It validates both accounts, verifies the sender, checks product and daily limits, then performs debit, credit, and audit-total updates in a controlled order.
+## Audit Layer
 
-### Audit
+`Transaction` records the result of a completed operation. It stores the operation type, amount, balance after the operation, account references, status, description, and a unique identifier. The receipt formatter gives the record a human-readable representation without losing structured data.
 
-`Transaction` is an immutable-style record of a completed money movement. Commands wrap deposits, withdrawals, and transfers so callers can execute an operation and retrieve its audit record through one interface.
+## Command Layer
 
-### Logging
+I use `TransactionCommand` as the common interface for deposit, withdrawal, and transfer commands. Each command hides how the operation is executed while allowing the caller to retrieve the resulting transaction record.
 
-The logging abstraction delegates persistence to a destination interface. File, memory, and simulated database destinations can be selected at runtime without changing the logger or command classes.
+## Logging Layer
 
-## Extension Points
+`TransactionLogger` depends on the `LogDestination` contract instead of a concrete storage class. This lets me switch between memory, file, and simulated database destinations without changing the logger or command code.
+
+## How I Extend the Platform
 
 - Add an account product by implementing the account contract and registering it with `AccountFactory`.
-- Add a policy by extending the properties files and rules-engine lookup.
-- Add a command by implementing `TransactionCommand`.
+- Add a configurable policy by extending the properties files and rules-engine lookup.
+- Add a new operation by implementing `TransactionCommand`.
 - Add a storage backend by implementing `LogDestination`.
-- Add a transaction type by extending `TransactionType` and constructing the corresponding record.
+- Add a new audit type by extending `TransactionType` and constructing its record.
 
-## Reliability Principles
+## Reliability Rules
 
-- Validate before changing balances.
-- Keep policy decisions centralized.
-- Record successful operations only after money movement completes.
+I follow these rules throughout the project:
+
+- Validate every request before changing a balance.
+- Keep policy decisions in one place.
+- Create successful audit records only after money movement completes.
 - Keep storage details behind interfaces.
-- Preserve earlier activity behavior as later capabilities are introduced.
+- Preserve earlier behavior as each later capability is added.
