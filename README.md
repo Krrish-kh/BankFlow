@@ -1,68 +1,98 @@
-# Banking System
+# Aurelia Ledger
 
-Progressive banking-system coursework organized by activity and feature branch.
+**A modular banking platform for reliable account operations, policy-driven money movement, and auditable transaction workflows.**
+
+Aurelia Ledger models the evolution of a financial services core from a simple account ledger into a structured platform with account products, configurable policy, secure transfers, transaction records, command-based operations, and pluggable logging destinations.
+
+## Product Capabilities
+
+- Account lifecycle management with deposits, withdrawals, PIN protection, and status controls
+- Savings, current, fixed-deposit, and salary account products
+- Centralized policy evaluation for balances, interest, overdrafts, and transfer limits
+- External `.properties` configuration for operational rules
+- Daily transfer limits based on account type and customer tenure
+- Structured transaction records with formatted receipts and unique identifiers
+- Command objects for deposit, withdrawal, and transfer workflows
+- File, in-memory, and simulated database logging destinations
+- Runtime switching between logging backends through a bridge abstraction
+
+## Architecture
+
+The implementation is organized as a progressive set of compatible capability layers:
+
+```text
+Account products
+	|
+Policy and rules engine ---- external configuration
+	|
+Transfer service
+	|
+Transaction model
+	|
+Command workflows ---- logging destinations
+```
+
+The `main` branch is the cumulative release line. Activity branches are feature snapshots that can be reviewed independently and merged forward without replacing later capabilities.
 
 ## Repository Layout
 
-Each activity lives under `activities/activity-01` through `activities/activity-18`.
-Instructional material, questions, archives, generated caches, and submission wrappers are excluded from the clean project tree.
+```text
+activities/
+  activity-01/ ... activity-18/   progressive capability snapshots
+docs/                             architecture and operating notes
+README.md                         project overview
+```
 
-## Weekly Roadmap
+Each activity folder is self-contained. The later activities use the `gdb` package structure and include their own configuration and tests.
 
-| Week | Activities | Focus |
-| --- | --- | --- |
-| Week 1 | 01-04 | Account foundations, validation, and enhanced account behavior |
-| Week 2 | 05-08 | Validation, account subclasses, interest policies, and account registry |
-| Week 3 | 09-11 | Additional account capabilities and service-level behavior |
-| Week 4 | 12-14 | Account policy objects, rules-engine integration, and external properties |
-| Week 5 | 15-16 | Funds transfer with daily limits and transaction audit records |
-| Week 6 | 17-18 | Command pattern, file logging, bridge logging, and database destination |
+## Getting Started
 
-## Branch Strategy
+Python 3.10 or newer is recommended. Clone the repository and run a capability-specific test suite from its activity directory:
 
-Branches are cumulative and named for the feature completed by that activity:
+```powershell
+git clone https://github.com/Krrish-kh/BANKING_SYSTEM.git
+Set-Location .\BANKING_SYSTEM\activities\activity-18
+python -m gdb.tests.test_bridge_logging -v
+```
+
+Useful verification commands:
+
+```powershell
+Set-Location .\activities\activity-15
+python -m gdb.tests.test_transfer -v
+
+Set-Location ..\activity-16
+python -m gdb.tests.test_transaction_model -v
+
+Set-Location ..\activity-17
+python -m gdb.tests.test_command_logging -v
+
+Set-Location ..\activity-18
+python -m gdb.tests.test_bridge_logging -v
+```
+
+## Release Roadmap
+
+| Phase | Capabilities |
+| --- | --- |
+| Foundation | Account state, validation, lifecycle, and product behavior |
+| Policy | Interest, overdraft, account policy, rules engine, and external configuration |
+| Operations | Account factory, transfers, tenure tiers, and daily limits |
+| Audit | Transactions, receipts, commands, persistence, and logging destinations |
+
+The complete activity-to-feature map is available in [docs/activity-roadmap.md](docs/activity-roadmap.md). System boundaries and extension points are described in [docs/architecture.md](docs/architecture.md).
+
+## Branch Convention
+
+Branches follow `activity-XX-feature-name`, for example:
 
 ```text
-activity-01-account-foundation
-activity-02-account-validation
-activity-03-account-operations
-activity-04-enhanced-account-tests
-activity-05-validation-rules
-activity-06-account-subclasses
-activity-07-interest-policies
-activity-08-account-registry
-activity-09-account-services
-activity-10-account-rules
-activity-11-service-integration
-activity-12-account-policy
-activity-13-rules-engine
-activity-14-external-properties
 activity-15-funds-transfer
 activity-16-transaction-model
 activity-17-command-file-logging
 activity-18-bridge-logging
 ```
 
-`main` contains the cumulative result through activity 18. Each activity branch adds one focused improvement while preserving the behavior established by earlier activities. Future refinements can be applied to their activity branch and merged forward into `main` without replacing later features.
+## License
 
-## Development Progression
-
-The project grows in deliberate steps: account state and validation lead to product-specific behavior; policy and interest handling lead to abstract accounts and factories; the rules engine then externalizes policy; transfers add operational workflows; transactions, commands, and pluggable logging complete the audit architecture.
-
-## Local Verification
-
-Run tests from the activity folder that contains the relevant `gdb` package. For example:
-
-```powershell
-Set-Location .\activities\activity-15
-python -m gdb.tests.test_transfer -v
-```
-
-## GitHub Deployment
-
-```powershell
-git remote -v
-git branch -a
-git push origin main
-git push origin --all
-```
+No license has been declared for this repository yet.
