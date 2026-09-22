@@ -1,8 +1,8 @@
-# Aurelia Ledger
+# BankFlow Core Banking Platform
 
-**A modular banking platform for reliable account operations, policy-driven money movement, and auditable transaction workflows.**
+**A modular core banking platform for reliable account operations, policy-driven money movement, and auditable transaction workflows.**
 
-Aurelia Ledger models the evolution of a financial services core from a simple account ledger into a structured platform with account products, configurable policy, secure transfers, transaction records, command-based operations, and pluggable logging destinations.
+BankFlow models a financial services core with account products, configurable policy, secure transfers, transaction records, command-based operations, and pluggable logging destinations.
 
 ## Product Capabilities
 

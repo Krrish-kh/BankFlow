@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Aurelia Ledger is structured as a small banking core with clear boundaries between account state, policy, operations, audit records, and storage.
+BankFlow Core Banking Platform is structured as a small banking core with clear boundaries between account state, policy, operations, audit records, and storage.
 
 ## Core Layers
 

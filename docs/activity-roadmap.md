@@ -1,6 +1,6 @@
 # Activity Roadmap
 
-Aurelia Ledger develops through focused capability releases. Every branch adds one bounded improvement to the cumulative `main` line.
+BankFlow Core Banking Platform develops through focused capability releases. Every branch adds one bounded improvement to the cumulative `main` line.
 
 | Activity | Branch | Capability |
 | --- | --- | --- |
